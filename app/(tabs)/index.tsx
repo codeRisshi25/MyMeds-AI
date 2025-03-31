@@ -1,6 +1,7 @@
 import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { Clock, Pill } from 'lucide-react-native';
 import { useUser } from "@clerk/clerk-expo";
+import { useRouter } from 'expo-router';
 
 export default function HomeScreen() {
   const upcomingMedications = [
@@ -9,7 +10,6 @@ export default function HomeScreen() {
     { id: 3, name: 'Vitamin D', dosage: '1000IU', time: '8:00 PM' },
   ];
   const {user} = useUser();
-
   return (
     <View style={styles.container}>
       <Text style={styles.greeting}>Good Morning, {user?.firstName}</Text>
