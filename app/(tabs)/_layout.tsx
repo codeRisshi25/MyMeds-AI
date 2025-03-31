@@ -1,24 +1,19 @@
 import { Tabs } from 'expo-router';
-import { Chrome as Home, CirclePlus as PlusCircle, Calendar, User, Search } from 'lucide-react-native';
+import { Home, CirclePlus as PlusCircle, Calendar, User, Search } from 'lucide-react-native';
 import { useTheme } from '@/context/ThemeContext';
 import { useAuth } from '@clerk/clerk-expo';
 
 export default function TabLayout() {
   const { colors } = useTheme();
-
-  const { isSignedIn } = useAuth();
-  
-  if (!isSignedIn) {
-    return null; // The redirect will be handled by the parent layout
-  }
-
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
           backgroundColor: colors.surface,
-          borderTopColor: colors.border,
+          borderTopWidth: 0, // Remove the white line
+          elevation: 0, // Remove shadow on Android
+
         },
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textSecondary,
@@ -28,7 +23,7 @@ export default function TabLayout() {
         },
       }}>
       <Tabs.Screen
-        name="index"
+        name="home"
         options={{
           title: 'Home',
           tabBarIcon: ({ color, size }) => <Home size={size} color={color} />,

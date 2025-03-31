@@ -27,7 +27,7 @@ export default function ProfileScreen() {
           style={styles.avatar}
         />
         <Text style={styles.name}>{user?.fullName}</Text>
-        <Text style={styles.email}>john.doe@example.comr</Text>
+        <Text style={styles.email}>{user?.primaryEmailAddress?.emailAddress}</Text>
       </View>
 
       <View style={styles.section}>

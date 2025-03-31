@@ -2,6 +2,8 @@ import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-nati
 import { Clock, Pill } from 'lucide-react-native';
 import { useUser } from "@clerk/clerk-expo";
 import { useRouter } from 'expo-router';
+import { useTheme } from '@/context/ThemeContext';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 export default function HomeScreen() {
   const upcomingMedications = [
@@ -9,11 +11,20 @@ export default function HomeScreen() {
     { id: 2, name: 'Ibuprofen', dosage: '400mg', time: '2:00 PM' },
     { id: 3, name: 'Vitamin D', dosage: '1000IU', time: '8:00 PM' },
   ];
+  const time = () => {
+    const currentHour = new Date().getHours();
+    if (currentHour < 12 && currentHour > 6) {
+      return ' Morning';
+    } else if (currentHour < 18 && currentHour >= 12) {
+      return ' Afternoon';
+    } else {
+      return ' Evening';
+    }
+  }
   const {user} = useUser();
   return (
     <View style={styles.container}>
-      <Text style={styles.greeting}>Good Morning, {user?.firstName}</Text>
-      
+      <Text style={styles.greeting}>Good{time()}, {user?.firstName}</Text>
       <View style={styles.todaySection}>
         <Text style={styles.sectionTitle}>Today's Schedule</Text>
         <ScrollView style={styles.medicationList}>
@@ -45,8 +56,9 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.white,
     padding: 20,
+
   },
   greeting: {
     fontSize: 28,
