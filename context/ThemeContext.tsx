@@ -1,8 +1,6 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext } from 'react';
 
 interface ThemeContextType {
-  isDarkMode: boolean;
-  toggleTheme: () => void;
   colors: {
     background: string;
     surface: string;
@@ -21,28 +19,22 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [isDarkMode, setIsDarkMode] = useState(true);
-
   const colors = {
-    background: isDarkMode ? '#121212' : '#FFFFFF',
-    surface: isDarkMode ? '#1E1E1E' : '#F5F5F5',
-    text: isDarkMode ? '#FFFFFF' : '#121212',
-    textSecondary: isDarkMode ? '#A0A0A0' : '#666666',
-    primary: '#6366F1',
+    background: '#f8fafc',
+    surface: '#f8fafc',
+    text: '#FFFFFF',
+    textSecondary: '#A0A0A0',
+    primary: '#0891b2',
     secondary: '#EC4899',
     accent: '#8B5CF6',
     error: '#EF4444',
     success: '#10B981',
     warning: '#F59E0B',
-    border: isDarkMode ? '#2E2E2E' : '#E5E5E5',
-  };
-
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
+    border: '#f8fafc',
   };
 
   return (
-    <ThemeContext.Provider value={{ isDarkMode, toggleTheme, colors }}>
+    <ThemeContext.Provider value={{ colors }}>
       {children}
     </ThemeContext.Provider>
   );

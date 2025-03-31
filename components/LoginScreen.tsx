@@ -15,7 +15,7 @@ export const useWarmUpBrowser = () => {
             void WebBrowser.coolDownAsync();
         }
     }
-        , []);
+    , []);
 }
 
 WebBrowser.maybeCompleteAuthSession();
@@ -87,7 +87,7 @@ export default function LoginScreen() {
                     source={{ uri: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=400&auto=format&fit=crop' }}
                     style={styles.logo}
                 />
-                <Text style={[styles.title, { color: colors.text }]}>MyMeds</Text>
+                <Text style={[styles.title, { color: '#000' }]}>MyMeds</Text>
                 <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
                     Your personal medication assistant
                 </Text>
@@ -98,7 +98,7 @@ export default function LoginScreen() {
             ) : null}
             <View style={styles.form}>
                 <TouchableOpacity
-                    style={[styles.googleButton, { backgroundColor: colors.surface }]}
+                    style={[styles.googleButton, { backgroundColor: colors.primary }]}
                     onPress={googleLogin}
                 >
                     <Image
@@ -112,7 +112,7 @@ export default function LoginScreen() {
             </View>
             <View style={styles.form}>
                 <TouchableOpacity
-                    style={[styles.googleButton, { backgroundColor: colors.surface }]}
+                    style={[styles.googleButton, { backgroundColor: colors.primary }]}
                     onPress={githubLogin}
                 >
                     <Image
@@ -126,7 +126,7 @@ export default function LoginScreen() {
             </View>
             <View style={styles.form}>
                 <TouchableOpacity
-                    style={[styles.googleButton, { backgroundColor: colors.surface }]}
+                    style={[styles.googleButton, { backgroundColor: colors.primary }]}
                     onPress={microsoftLogin}
                 >
                     <Image
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         padding: 16,
         borderRadius: 12,
-        height: 50,
+        height: 55,
     },
     googleIcon: {
         width: 24,

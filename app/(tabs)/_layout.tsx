@@ -13,6 +13,7 @@ export default function TabLayout() {
           backgroundColor: colors.surface,
           borderTopWidth: 0, // Remove the white line
           elevation: 0, // Remove shadow on Android
+          height: 60,
 
         },
         tabBarActiveTintColor: colors.primary,
@@ -29,13 +30,13 @@ export default function TabLayout() {
           tabBarIcon: ({ color, size }) => <Home size={size} color={color} />,
         }}
       />
-      <Tabs.Screen
-        name="add"
-        options={{
-          title: 'Add',
-          tabBarIcon: ({ color, size }) => <PlusCircle size={size} color={color} />,
-        }}
-      />
+        <Tabs.Screen
+          name='scan'
+          options={{
+            title: 'Scan',
+            tabBarIcon: ({ color, size }) => <Search size={size} color={color} />,
+          }}
+        />
       <Tabs.Screen
         name="schedule"
         options={{
@@ -49,13 +50,6 @@ export default function TabLayout() {
           title: 'Profile',
           tabBarIcon: ({ color, size }) => <User size={size} color={color} />,
         }}
-      />
-      <Tabs.Screen 
-      name='scan'
-      options={{
-        title: 'Scan',
-        tabBarIcon: ({ color, size }) => <Search size={size} color={color} />,
-      }}
       />
     </Tabs>
   );
