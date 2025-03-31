@@ -1,9 +1,16 @@
 import { Tabs } from 'expo-router';
-import { Chrome as Home, CirclePlus as PlusCircle, Calendar, User } from 'lucide-react-native';
+import { Chrome as Home, CirclePlus as PlusCircle, Calendar, User, Search } from 'lucide-react-native';
 import { useTheme } from '@/context/ThemeContext';
+import { useAuth } from '@clerk/clerk-expo';
 
 export default function TabLayout() {
   const { colors } = useTheme();
+
+  const { isSignedIn } = useAuth();
+  
+  if (!isSignedIn) {
+    return null; // The redirect will be handled by the parent layout
+  }
 
   return (
     <Tabs
@@ -47,6 +54,13 @@ export default function TabLayout() {
           title: 'Profile',
           tabBarIcon: ({ color, size }) => <User size={size} color={color} />,
         }}
+      />
+      <Tabs.Screen 
+      name='scan'
+      options={{
+        title: 'Scan',
+        tabBarIcon: ({ color, size }) => <Search size={size} color={color} />,
+      }}
       />
     </Tabs>
   );
