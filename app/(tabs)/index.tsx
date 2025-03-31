@@ -1,5 +1,6 @@
 import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { Clock, Pill } from 'lucide-react-native';
+import { useUser } from "@clerk/clerk-expo";
 
 export default function HomeScreen() {
   const upcomingMedications = [
@@ -7,10 +8,11 @@ export default function HomeScreen() {
     { id: 2, name: 'Ibuprofen', dosage: '400mg', time: '2:00 PM' },
     { id: 3, name: 'Vitamin D', dosage: '1000IU', time: '8:00 PM' },
   ];
+  const {user} = useUser();
 
   return (
     <View style={styles.container}>
-      <Text style={styles.greeting}>Good Morning, John</Text>
+      <Text style={styles.greeting}>Good Morning, {user?.firstName}</Text>
       
       <View style={styles.todaySection}>
         <Text style={styles.sectionTitle}>Today's Schedule</Text>

@@ -1,24 +1,33 @@
 import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Bell, ChevronRight, LogOut, Settings, User } from 'lucide-react-native';
+import { useUser } from '@clerk/clerk-expo';
+import { useClerk } from '@clerk/clerk-expo';
+
 
 export default function ProfileScreen() {
   const router = useRouter();
+  const { user }  = useUser();
+  const { signOut } = useClerk();
 
-  const handleSignOut = () => {
-    // TODO: Implement sign out logic
-    router.replace('/sign-in');
+  const handleSignOut =  async () => {
+    try {
+    await signOut();
+    router.replace('/(auth)/sign-in');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Image
-          source={{ uri: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200&auto=format&fit=crop' }}
+          source={{ uri: user?.imageUrl }}
           style={styles.avatar}
         />
-        <Text style={styles.name}>John Doe</Text>
-        <Text style={styles.email}>john.doe@example.com</Text>
+        <Text style={styles.name}>{user?.fullName}</Text>
+        <Text style={styles.email}>john.doe@example.comr</Text>
       </View>
 
       <View style={styles.section}>

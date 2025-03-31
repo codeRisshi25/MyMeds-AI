@@ -1,34 +1,72 @@
-import { useState } from 'react';
+import { useState , useEffect, useCallback} from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Mail, Lock } from 'lucide-react-native';
-import { useAuth } from '@/context/AuthContext';
 import { useTheme } from '@/context/ThemeContext';
+import * as WebBrowser from "expo-web-browser";
+import * as AuthSession from "expo-auth-session";
+import { useSSO , useSignIn } from "@clerk/clerk-expo";
 
+
+export const useWarmUpBrowser = () => {
+  useEffect(() => {
+    void WebBrowser.warmUpAsync();
+    return () => {
+      void WebBrowser.coolDownAsync();
+    }
+  }
+  , []);
+}
+
+WebBrowser.maybeCompleteAuthSession();
 export default function SignIn() {
+  // WarmUp Browser for the Google Sign in
+  useWarmUpBrowser();
+  const { startSSOFlow } = useSSO();
   const router = useRouter();
-  const { signIn } = useAuth();
+  
   const { colors } = useTheme();
+  const { signIn, setActive, isLoaded } = useSignIn();
   const [email, setEmail] = useState(''); 
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  
+  const onPress = useCallback(async () => {
+    try {
+      const {createdSessionId, setActive} = await startSSOFlow({
+        strategy: "oauth_google",
+        redirectUrl: AuthSession.makeRedirectUri(),
+      });
+      if (createdSessionId){
+        if (setActive) {
+          setActive({ session: createdSessionId });
+        }
+      } else {
+
+      }
+    } catch (err){
+      console.error(err);
+    }
+  },[]);
 
   const handleEmailSignIn = async () => {
+    if (!isLoaded) return;
     try {
-      // Replace with appropriate logic for email sign-in
-      console.log('Email sign-in logic not implemented');
-      router.replace('/(tabs)');
+      const signInAttempt = await signIn.create({
+        identifier: email,
+        password,
+      });
+
+      if (signInAttempt.status === 'complete') {
+        const sessionId = signInAttempt.createdSessionId;
+        if (sessionId) {
+          setActive({ session: sessionId });
+        }
+      } else {
+        setError('Invalid email or password');
+      }
     } catch (err) {
       setError('Invalid email or password');
-    }
-  };
-
-  const handleGoogleSignIn = async () => {
-    try {
-      await signIn('google');
-      router.replace('/(tabs)');
-    } catch (error) {
-      setError('Failed to sign in with Google');
     }
   };
 
@@ -90,7 +128,7 @@ export default function SignIn() {
 
         <TouchableOpacity
           style={[styles.googleButton, { backgroundColor: colors.surface }]}
-          onPress={handleGoogleSignIn}
+          onPress={onPress}
         >
           <Image
             source={{ uri: 'https://developers.google.com/identity/images/g-logo.png' }}
